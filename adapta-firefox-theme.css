@@ -1,0 +1,1257 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+   License, v. 2.0. If a copy of the MPL was not distributed with this
+   file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* devedition.css is loaded in browser.xul after browser.css when it is
+   preffed on.  The bulk of the styling is here in the shared file, but
+   there are overrides for each platform in their devedition.css files. */
+
+:root {
+  --tab-toolbar-navbar-overlap: 0px;
+  --navbar-tab-toolbar-highlight-overlap: 0px;
+  --space-above-tabbar: 0px;
+  --toolbarbutton-text-shadow: none;
+  --backbutton-urlbar-overlap: 0px;
+  --tab-min-height: 34px;
+}
+
+:root[devtoolstheme="dark"] {
+  /* Chrome */
+  --chrome-background-color: #2a373e;
+  --chrome-color: #2a373e;
+  --chrome-secondary-background-color: #F5f5f5;
+  --chrome-navigator-toolbox-separator-color: rgba(0,0,0,.2);
+  --chrome-nav-bar-separator-color: rgba(0,0,0,.2);
+  --chrome-nav-buttons-background: #252C33;
+  --chrome-nav-buttons-hover-background: #1B2127;
+  --chrome-nav-bar-controls-border-color: #1D2328;
+  --chrome-selection-color: #fff;
+  --chrome-selection-background-color: #00bcd4;
+
+  /* Tabs */
+  --tabs-toolbar-color: #F5F7FA;
+  --tab-background-color: #fff;
+  --tab-hover-background-color: #00bcd4;
+  --tab-hover-box-shadow: inset 0 -3px #13191c;
+  --tab-selection-color: rgb(255, 255, 255);
+  --tab-selection-background-color: #13191c;
+  --tab-selection-box-shadow: inset 0 -3px #00bcd4;
+  --pinned-tab-glow: radial-gradient(22px at center calc(100% - 2px), #00bcd4 13%, rgba(0,0,0,0.4) 16%, transparent 70%);
+
+  /* Toolbar buttons */
+  --toolbarbutton-hover-background: rgba(25,33, 38,.6) linear-gradient(rgba(25,33,38,.6), rgba(25,33,38,.6)) padding-box;
+  --toolbarbutton-hover-boxshadow: none;
+  --toolbarbutton-hover-bordercolor: transparent;
+  --toolbarbutton-active-background: rgba(25,33,38,1) linear-gradient(rgba(25,33,38,1), rgba(25,33,38,1)) border-box;
+  --toolbarbutton-active-boxshadow: none;
+  --toolbarbutton-active-bordercolor: transparent;
+  --toolbarbutton-checkedhover-backgroundcolor: #00bcd4;
+
+  /* Url and search bars */
+  --panel-separator-color: rgba(0, 0, 0, 0.2);
+  --url-and-searchbar-background-color: #FAFAFA;
+  --urlbar-separator-color: #5F6670;
+  --urlbar-dropmarker-url: url("chrome://browser/skin/devedition/urlbar-history-dropmarker.svg");
+  --urlbar-dropmarker-region: rect(0px, 11px, 14px, 0px);
+  --urlbar-dropmarker-hover-region: rect(0, 22px, 14px, 11px);
+  --urlbar-dropmarker-active-region: rect(0px, 33px, 14px, 22px);
+  --urlbar-dropmarker-2x-url: url("chrome://browser/skin/devedition/urlbar-history-dropmarker.svg");
+  --urlbar-dropmarker-2x-region: rect(0px, 11px, 14px, 0px);
+  --urlbar-dropmarker-hover-2x-region: rect(0, 22px, 14px, 11px);
+  --urlbar-dropmarker-active-2x-region: rect(0px, 33px, 14px, 22px);
+}
+
+:root[devtoolstheme="light"] {
+  --panel-separator-color: rgba(0, 0, 0, 0.1);
+  --url-and-searchbar-background-color: rgb(255, 255, 255);
+
+  --chrome-background-color: #F5F5F5;
+  --chrome-color: rgba(0, 0, 0, 0.8);
+  --chrome-secondary-background-color: #F5F5F5;
+  --chrome-navigator-toolbox-separator-color: rgba(0, 0, 0, 0.1);
+  --chrome-nav-bar-separator-color: rgba(0, 0, 0, 0.1);
+  --chrome-nav-buttons-background: rgb(255, 255, 255); /* --theme-body-background */
+  --chrome-nav-buttons-hover-background: red;
+  --chrome-nav-bar-controls-border-color: rgba(0, 0, 0, 0.1);
+  --chrome-selection-color: rgb(255, 255, 255);
+  --chrome-selection-background-color: #00bcd4;
+
+
+  --tab-background-color: rgba(69, 90, 100, 0.1);
+  --tab-hover-background-color: rgba(69, 90, 100, 0.3);
+  --tab-hover-box-shadow: inset 0 -3px rgba(0, 188, 212, 0.5);
+  --tab-selection-color: rgba(0, 0, 0, 0.8);
+  --tab-selection-background-color: rgb(255, 255, 255);
+  --tab-selection-box-shadow: inset 0 -3px #00bcd4;
+  --pinned-tab-glow: radial-gradient(22px at center calc(100% - 2px), #00bcd4 13%, transparent 16%);
+
+
+  /* Toolbar buttons */
+  --toolbarbutton-hover-background: rgba(0, 0, 0, 0.12);
+  --toolbarbutton-hover-boxshadow: none;
+  --toolbarbutton-hover-bordercolor: transparent;
+  --toolbarbutton-active-background: rgba(0, 0, 0, 0.24);
+  --toolbarbutton-active-boxshadow: none;
+  --toolbarbutton-active-bordercolor: transparent;
+  --toolbarbutton-checkedhover-backgroundcolor: #d7d7d8;
+}
+
+/* Give some space to drag the window around while customizing
+   (normal space to left and right of tabs doesn't work in this case) */
+#main-window[tabsintitlebar][customizing] {
+  --space-above-tabbar: 9px;
+}
+
+/* Override @tabCurveHalfWidth@ and @tabCurveWidth@.  XXX: Switch to a CSS variable once the perf is sorted out - bug 1088771 */
+.tab-background-middle {
+  border-left-width: 0;
+  border-right-width: 0;
+  margin: 0;
+}
+
+.tab-background,
+.tabs-newtab-button {
+  margin-inline-end: 0;
+  margin-inline-start: 0;
+}
+
+.tabbrowser-arrowscrollbox > .arrowscrollbox-scrollbox {
+  padding-inline-end: 0;
+  padding-inline-start: 0;
+}
+
+.tab-background-start[selected=true]::after,
+.tab-background-start[selected=true]::before,
+.tab-background-start,
+.tab-background-end,
+.tab-background-end[selected=true]::after,
+.tab-background-end[selected=true]::before {
+  width: 0;
+}
+
+.tab-background-start[selected=true]::after,
+.tab-background-end[selected=true]::after {
+  margin-inline-start: 0;
+}
+/* End override @tabCurveHalfWidth@ and @tabCurveWidth@ */
+
+#urlbar ::-moz-selection,
+#navigator-toolbox .searchbar-textbox ::-moz-selection,
+.browserContainer > findbar ::-moz-selection {
+  background-color: var(--chrome-selection-background-color);
+  color: var(--chrome-selection-color);
+}
+
+/* Change the base colors for the browser chrome */
+
+#tabbrowser-tabs,
+#TabsToolbar,
+#browser-panel {
+  background: var(--chrome-background-color);
+  color: var(--chrome-color);
+}
+
+/* Remove bottom border */
+#navigator-toolbox::after {
+  height: 0;
+}
+
+#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar):not(#nav-bar),
+.browserContainer > findbar,
+#browser-bottombox {
+  background-color: var(--chrome-secondary-background-color) !important;
+  background-image: none !important;
+  color: var(--chrome-color);
+}
+
+/* Default findbar text color doesn't look good - Bug 1125677 */
+.browserContainer > findbar .findbar-find-status,
+.browserContainer > findbar .found-matches {
+  color: inherit;
+}
+
+#navigator-toolbox .toolbarbutton-1,
+.browserContainer > findbar .findbar-button,
+#PlacesToolbar toolbarbutton.bookmark-item {
+  color: var(--chrome-color);
+  text-shadow: var(--toolbarbutton-text-shadow);
+
+}
+
+/* Using toolbar[brighttext] instead of important to override linux */
+toolbar[brighttext] #downloads-indicator-counter {
+  text-shadow: var(--toolbarbutton-text-shadow);
+  color: var(--chrome-color);
+}
+
+#TabsToolbar {
+  text-shadow: none !important;
+  color: var(--chrome-color) !important; /* Make sure that the brighttext attribute is added */
+}
+
+/* URL bar and search bar*/
+#urlbar,
+#navigator-toolbox .searchbar-textbox {
+  margin: 6px !important;
+  min-height: 36px;
+  background-color: var(--url-and-searchbar-background-color) !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.24) !important;
+  border-radius: 2px !important;
+  transition: all 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+#urlbar {
+  background-color: transparent !important;
+  color: rgba(255, 255, 255, 0.75);
+  box-shadow: none !important;
+}
+
+#urlbar:hover {
+  color: white;
+}
+
+#urlbar[focused="true"] {
+  background-color: var(--url-and-searchbar-background-color) !important;
+  color: var(--chrome-color);
+}
+
+#urlbar[focused="true"],
+#navigator-toolbox .searchbar-textbox[focused="true"] {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23) !important;
+}
+
+#navigator-toolbox .searchbar-textbox {
+  -moz-margin-start: -4px !important;
+}
+
+.search-go-button,
+#identity-box {
+  padding: 8px;
+}
+
+.searchbar-search-button {
+  margin: 0;
+  padding: 6px;
+}
+
+.ac-url-text,
+.ac-action-text {
+  font-size: 90%;
+  color: currentColor;
+  opacity: 0.6;
+}
+
+:root[devtoolstheme="dark"] #identity-icon:-moz-lwtheme {
+  --identity-icon-normal: url(chrome://browser/skin/identity-icon.svg#normal-white);
+  --identity-icon-hover: url(chrome://browser/skin/identity-icon.svg#hover-white);
+  --identity-icon-notice: url(chrome://browser/skin/identity-icon.svg#notice-white);
+  --identity-icon-notice-hover: url(chrome://browser/skin/identity-icon.svg#notice-hover-white);
+}
+
+:root[devtoolstheme="dark"] #tracking-protection-icon:-moz-lwtheme {
+  --tracking-protection-icon-enabled: url(chrome://browser/skin/tracking-protection-16.svg#enabled-white);
+  --tracking-protection-icon-disabled: url(chrome://browser/skin/tracking-protection-16.svg#disabled-white);
+}
+
+:root[devtoolstheme="dark"] #connection-icon:-moz-lwtheme {
+  --connection-icon-mixed-passive-loaded: url(chrome://browser/skin/connection-mixed-passive-loaded.svg#icon-white);
+  --connection-icon-mixed-active-loaded: url(chrome://browser/skin/connection-mixed-active-loaded.svg#icon-white);
+}
+
+#urlbar {
+  border-inline-start: none !important;
+  opacity: 1 !important;
+}
+
+window:not([chromehidden~="toolbar"]) #urlbar-wrapper {
+  overflow: -moz-hidden-unscrollable;
+  clip-path: none;
+  margin-inline-start: 0;
+}
+
+/* Nav bar specific stuff */
+#nav-bar {
+  margin-top: 0 !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  box-shadow: 0 -1px var(--chrome-nav-bar-separator-color) !important;
+}
+
+/* No extra vertical padding for nav bar */
+#nav-bar-customization-target,
+#nav-bar {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Use smaller back button icon */
+#back-button {
+  -moz-image-region: rect(0, 54px, 18px, 36px);
+}
+
+@media (min-resolution: 1.1dppx) {
+  #back-button {
+    -moz-image-region: rect(0, 108px, 36px, 72px);
+  }
+}
+
+.tab-background {
+  visibility: hidden;
+}
+
+/* Tab separators */
+.tabbrowser-tab::after,
+.tabbrowser-tab::before {
+  background: currentColor;
+  opacity: 0 !important;
+}
+
+.tabbrowser-tab {
+  /* We normally rely on other tab elements for pointer events, but this
+     theme hides those so we need it set here instead */
+  pointer-events: auto;
+
+  transition: all 0.3s cubic-bezier(0.0, 0.0, 0.2, 1),
+              background-size 0.001s,
+              background-image 0.001s !important;
+  border: 1px solid transparent;
+  border-width: 0 1px;
+  margin: 0 -1px;
+
+	background-image: radial-gradient(circle farthest-corner at center, currentColor 10%, transparent 0%) !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 0% 0%;
+  background-clip: padding-box;
+  color: var(--chrome-selection-background-color) !important;
+  font-weight: 500;
+}
+
+.tabbrowser-tab:-moz-any([image], [pinned]) > .tab-stack > .tab-content[attention]:not([selected="true"]),
+.tabbrowser-tab > .tab-stack > .tab-content[pinned][titlechanged]:not([selected="true"]) {
+  background-image: var(--pinned-tab-glow);
+  background-position: center;
+  background-size: 100%;
+}
+
+.tabbrowser-tab[image] > .tab-stack > .tab-content[attention]:not([pinned]):not([selected="true"]) {
+  background-position: left bottom var(--tab-toolbar-navbar-overlap);
+  background-size: 34px 100%;
+}
+
+.tabbrowser-tab:hover {
+  border-color: var(--chrome-nav-bar-controls-border-color);
+  background-color: var(--tab-hover-background-color);
+  box-shadow: var(--tab-hover-box-shadow);
+}
+
+.tabbrowser-tab[visuallyselected] {
+  border-color: var(--chrome-nav-bar-controls-border-color);
+  color: transparent !important;
+  background-color: var(--tab-selection-background-color);
+  background-size: 1000% 1000%;
+  box-shadow: var(--tab-selection-box-shadow);
+  transition: all 0.3s cubic-bezier(0.0, 0.0, 0.2, 1),
+              background-size 0.3s cubic-bezier(0.0, 0.0, 0.2, 1),
+              color 0.8s cubic-bezier(0.0, 0.0, 0.2, 1) !important;
+}
+
+.tabbrowser-tab .tab-label {
+  transition: all 0.3s cubic-bezier(0.0, 0.0, 0.2, 1) !important;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.menubar-text,
+.tabbrowser-tab:hover .tab-label,
+.tabbrowser-tab[visuallyselected] .tab-label {
+  color: var(--tab-selection-color); /* Override color: inherit */
+}
+
+.tab-icon-sound[soundplaying],
+.tab-icon-sound[muted] {
+  filter: url(chrome://browser/skin/filters.svg#fill) !important; /* removes drop-shadow filter */
+}
+
+/* Don't need space for the tab curves (66px - 30px) */
+.tabs-newtab-button {
+  width: 36px;
+}
+
+.tabs-newtab-button:hover {
+  /* Important needed because !important is used in browser.css */
+  background-color: var(--toolbarbutton-hover-background) !important;
+  background-image: none;
+}
+
+#main-menubar > menu {
+  -moz-appearance: none;
+  min-height: 28px;
+  padding: 4px 8px;
+	background-image: radial-gradient(circle farthest-corner at center, currentColor 10%, transparent 0%) !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1000% 1000%;
+  color: transparent !important;
+  transition: color 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+#main-menubar > menu:hover {
+  background-color: transparent;
+}
+
+#main-menubar > menu:hover:active {
+  color: rgba(0,0,0,0.12) !important;
+  transition: none;
+  background-size: 0% 0%;
+  animation: ripple_effect 0.3s cubic-bezier(0.0, 0.0, 0.2, 1) forwards !important;
+}
+
+#main-menubar > menu[open] {
+  color: rgba(0,0,0,0.12) !important;
+  transition: background-size 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.menubar-text {
+  margin: 0 !important;
+  color: var(--chrome-color);
+}
+
+:root {
+  --forwardbutton-width: 36px;
+}
+
+:root[devtoolstheme="light"] {
+  --urlbar-dropmarker-url: url("chrome://browser/skin/devedition/urlbar-history-dropmarker.svg");
+  --urlbar-dropmarker-region: rect(0px, 11px, 14px, 0px);
+  --urlbar-dropmarker-hover-region: rect(0, 22px, 14px, 11px);
+  --urlbar-dropmarker-active-region: rect(0px, 33px, 14px, 22px);
+  --urlbar-dropmarker-2x-url: url("chrome://browser/skin/devedition/urlbar-history-dropmarker.svg");
+  --urlbar-dropmarker-2x-region: rect(0px, 11px, 14px, 0px);
+  --urlbar-dropmarker-hover-2x-region: rect(0, 22px, 14px, 11px);
+  --urlbar-dropmarker-active-2x-region: rect(0px, 33px, 14px, 22px);
+}
+
+:root[devtoolstheme="dark"] .findbar-closebutton:not(:hover),
+:root[devtoolstheme="dark"] #sidebar-header > .close-icon:not(:hover),
+.tab-close-button[selected]:not(:hover) {
+  background-image: -moz-image-rect(url("chrome://global/skin/icons/close.svg"), 0, 80, 16, 64);
+}
+
+/* The menubar and tabs toolbar should match the devedition theme */
+#TabsToolbar,
+#toolbar-menubar {
+  -moz-appearance: none !important;
+}
+#main-menubar {
+  color: var(--chrome-color);
+}
+#main-menubar > menu:not([open]) {
+  color: inherit;
+}
+
+/* Allow buttons with -moz-appearance set to look normal on hover and open states */
+#navigator-toolbox .toolbarbutton-1:-moz-any(:hover, [open="true"]),
+#PlacesToolbar toolbarbutton.bookmark-item:-moz-any(:hover, [open="true"]) {
+  color: initial;
+}
+
+/* Square back and forward buttons */
+#back-button > .toolbarbutton-icon,
+#forward-button > .toolbarbutton-icon {
+  margin: 0;
+  border: none;
+  padding: 8px;
+  background-color: transparent;
+  box-shadow: none !important;
+}
+
+#forward-button > .toolbarbutton-icon {
+  border-inline-start: none;
+}
+
+/* Override a box shadow for disabled back button */
+#main-window:not([customizing]) #back-button[disabled] > .toolbarbutton-icon {
+  box-shadow: none !important;
+}
+
+#back-button:hover:not([disabled="true"]) > .toolbarbutton-icon,
+#forward-button:hover:not([disabled="true"]) > .toolbarbutton-icon {
+/*
+  background-color: var(--toolbarbutton-hover-background) !important;
+*/
+}
+
+#back-button > .toolbarbutton-icon {
+  border-radius: 2px !important;
+}
+
+.urlbar-history-dropmarker {
+  -moz-appearance: none;
+  padding: 0 3px;
+  list-style-image: var(--urlbar-dropmarker-url);
+  -moz-image-region: var(--urlbar-dropmarker-region);
+}
+
+/* Add the proper background for tab overflow */
+#alltabs-button,
+#new-tab-button {
+  background-color: transparent;
+}
+
+#new-tab-button:hover > .toolbarbutton-icon {
+  border-color: transparent !important;
+}
+
+/* Prevent double border below tabs toolbar */
+#TabsToolbar:not([collapsed="true"]) + #nav-bar {
+  border-top-width: 0 !important;
+}
+
+/* Fix the bad-looking text-shadow in the sidebar header: */
+.sidebar-header,
+#sidebar-header {
+  text-shadow: none;
+}
+
+.ac-type-icon {
+  /* Left-align the type icon in awesomebar popup results with the icon in the
+     urlbar. */
+  margin-inline-start: 11px;
+}
+
+
+/* GNOME stuff */
+
+.tabbrowser-arrowscrollbox > .scrollbutton-down,
+.tabbrowser-arrowscrollbox > .scrollbutton-up {
+  min-width: 24px;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.tabbrowser-arrowscrollbox > .scrollbutton-down:not([disabled]):hover,
+.tabbrowser-arrowscrollbox > .scrollbutton-up:not([disabled]):hover,
+button:hover {
+  background-color: var(--toolbarbutton-hover-background);
+}
+
+.tab-content {
+  padding: 0 8px;
+}
+
+.tab-content[pinned] {
+  padding-inline-end: 2px;
+}
+
+.tab-throbber, .tab-icon-image, .tab-icon-sound, .tab-close-button {
+  margin-top: 0;
+}
+
+.tabbrowser-arrowscrollbox {
+  margin-inline-start: -2px;
+}
+.arrowscrollbox-scrollbox {
+  padding-inline-start: 1px !important;
+}
+
+.arrowscrollbox-overflow-start-indicator,
+.arrowscrollbox-overflow-end-indicator {
+  width: 0 !important;
+  margin: 0 !important;
+  background-image: none !important;
+}
+
+.arrowscrollbox-overflow-start-indicator {
+  margin-inline-end: -1px !important;
+  border-inline-end: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.arrowscrollbox-overflow-end-indicator {
+  margin-inline-start: -1px !important;
+  border-inline-start: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+#nav-bar {
+  -moz-box-ordinal-group: 1;
+  z-index: 100 !important;
+  padding: 0 6px !important;
+  border-radius: 0px 0px 0 0 !important;
+/*
+  box-shadow: inset 0 1px rgba(255,255,255,0.2), 0 1px 1.5px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.24) !important;
+  */
+  background-color: #13191c !important;
+  background-image: none !important;
+  color: #fff;
+}
+
+#toolbar-menubar {
+  -moz-box-ordinal-group: 2;
+  border-bottom: 1px solid var(--chrome-nav-bar-controls-border-color) !important;
+  padding: 0;
+}
+
+#TabsToolbar {
+  -moz-box-ordinal-group: 3;
+  box-shadow: inset 0 -1px var(--chrome-nav-bar-controls-border-color) !important;
+  padding: 0 !important;
+}
+
+#tabbrowser-tabs {
+  background-color: transparent !important;
+}
+
+#PersonalToolbar {
+  -moz-box-ordinal-group: 4;
+  border-bottom: 0px solid var(--chrome-nav-bar-controls-border-color) !important;
+  padding: 2px !important;
+}
+
+#personal-bookmarks {
+
+  max-height: 24px;
+  padding:4px !important;
+
+}
+
+.close-icon {
+  border-radius: 1px;
+  list-style-image: url("moz-icon://stock/window-close-symbolic?size=menu") !important;
+  opacity: 0.75;
+  min-height: 24px;
+  min-width: 24px;
+}
+
+.close-icon:hover,
+.close-icon:hover:active {
+  opacity: 1;
+}
+
+.toolbarbutton-text {
+  color: var(--chrome-color);
+}
+
+#PersonalToolbar toolbarbutton {
+  -moz-appearance: none;
+  height: 28px !important;
+  margin: 0px !important;
+  padding: 0 0px !important;
+  border-radius: 0px;
+}
+
+.bookmark-item .toolbarbutton-icon[label]:not([label=""]),
+.bookmark-item .toolbarbutton-icon[type="menu"] {
+  -moz-margin-end: 0;
+}
+
+.bookmark-item .toolbarbutton-text {
+  margin: 0 4px !important;
+}
+
+#window-controls {
+  margin: 0;
+}
+
+/***********
+ * buttons *
+ ***********/
+
+#main-window button {
+  transition: box-shadow 0.2s cubic-bezier(0.0, 0.0, 0.2, 1),
+              background-color 0.3s cubic-bezier(0.0, 0.0, 0.2, 1),
+              background-size 0.5s cubic-bezier(0.0, 0.0, 0.2, 1),
+              color 1s cubic-bezier(0.0, 0.0, 0.2, 1) !important;
+  -moz-appearance: none;
+  min-width: 16px !important;
+  min-height: 32px !important;
+  padding: 0 8px !important;
+  border: none !important;
+  border-radius: 2px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background-color: #fafafa !important;
+	background-image: radial-gradient(circle farthest-corner at center, currentColor 10%, transparent 0%) !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1000% 1000%;
+  color: transparent;
+}
+
+#main-window button:hover {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
+}
+
+#main-window button:hover:active {
+  transition: box-shadow 0.3s cubic-bezier(0.0, 0.0, 0.2, 1),
+              background-color 0.3s cubic-bezier(0.0, 0.0, 0.2, 1) !important;
+  animation: ripple_effect 0.3s cubic-bezier(0.0, 0.0, 0.2, 1) forwards !important;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23), inset 0 0 0 9999px rgba(0, 0, 0, 0.12);
+  background-size: 0% 0%;
+  color: rgba(0, 0, 0, 0.12);
+}
+
+#main-window button[disabled="true"] {
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+#main-window button:hover:active *,
+#main-window button * {
+  color: var(--chrome-color); /* Override color: inherit */
+}
+
+#window-controls toolbarbutton {
+  -moz-appearance: none;
+  border-radius: 2px;
+  min-height: 24px;
+  min-width: 24px;
+}
+
+.toolbarbutton-1 {
+  min-width: 36px;
+  min-height: 36px;
+  margin: 6px 0 !important;
+  padding: 0 !important;
+  border-radius: 9999px !important;
+}
+
+.toolbarbutton-1:not(#bookmarks-menu-button)[open="true"] {
+  border-image: radial-gradient(circle closest-corner at center calc(100% - 1px),
+                                white 100%,
+                                transparent 0%)
+                                0 0 2 / 0 0 2px;
+}
+
+#TabsToolbar .toolbarbutton-1 {
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.panelUI-grid .toolbarbutton-1 {
+  border-radius: 2px !important;
+}
+
+.panelUI-grid .toolbarbutton-1 > .toolbarbutton-text,
+.panelUI-grid .toolbarbutton-1 > .toolbarbutton-multiline-text {
+  color: var(--chrome-color);
+}
+
+/* reset default button style */
+.findbar-button > .toolbarbutton-text,
+:-moz-any(#TabsToolbar, #nav-bar) .toolbarbutton-1 > .toolbarbutton-menubutton-button > .toolbarbutton-icon,
+:-moz-any(#TabsToolbar, #nav-bar) .toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker > .dropmarker-icon,
+:-moz-any(#TabsToolbar, #nav-bar) .toolbarbutton-1 > .toolbarbutton-badge-stack,
+:-moz-any(#TabsToolbar, #nav-bar) .toolbarbutton-1 > .toolbarbutton-icon {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+
+#forward-button {
+  -moz-box-align: center; /* reset */
+}
+
+:-moz-any(#back-button, #forward-button):not(:hover):not(:active):not([open="true"]) > .toolbarbutton-icon,
+[disabled="true"]:-moz-any(#back-button, #forward-button) > .toolbarbutton-icon {
+  background-color: transparent !important;
+}
+
+.toolbarbutton-menubutton-button,
+.toolbarbutton-menubutton-dropmarker {
+  margin: 0 !important;
+  padding: 9px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+.toolbarbutton-menubutton-button {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.toolbarbutton-menubutton-dropmarker {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.toolbarbutton-1#bookmarks-menu-button .toolbarbutton-menubutton-dropmarker {
+  background-clip: padding-box;
+  border-inline-start: 1px solid transparent !important;
+  border-image: linear-gradient(transparent 15%, rgba(255, 255, 255, 0.2) 15%, rgba(255, 255, 255, 0.2) 85%, transparent 85%) !important;
+  border-image-slice: 1 !important;
+}
+
+.toolbarbutton-1#bookmarks-menu-button:hover .toolbarbutton-menubutton-dropmarker {
+  background-clip: padding-box;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.toolbarbutton-menubutton-dropmarker::before {
+  all: unset !important;
+}
+
+/***********
+ * ripples *
+ ***********/
+
+@keyframes ripple_effect {
+  to { background-size: 1000% 1000%; }
+}
+
+#identity-box,
+.toolbarbutton-menubutton-button,
+.toolbarbutton-menubutton-dropmarker,
+.toolbarbutton-1:not(#bookmarks-menu-button),
+.close-icon,
+#TabsToolbar toolbarbutton,
+#PersonalToolbar toolbarbutton {
+  transition: background-color 0.3s cubic-bezier(0.0, 0.0, 0.2, 1),
+              background-size 0.5s cubic-bezier(0.0, 0.0, 0.2, 1),
+              color 1s cubic-bezier(0.0, 0.0, 0.2, 1) !important;
+	background-image: radial-gradient(circle farthest-corner at center, currentColor 10%, transparent 0%) !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1000% 1000%;
+  color: transparent !important;
+}
+
+
+#identity-box:hover,
+.toolbarbutton-1:not(#bookmarks-menu-button):not([disabled="true"]):hover,
+.close-icon:hover,
+#TabsToolbar toolbarbutton:hover,
+#PersonalToolbar toolbarbutton:hover {
+  background-color: var(--toolbarbutton-hover-background) !important;
+}
+
+#identity-box:hover:active,
+.toolbarbutton-menubutton-button:hover:active,
+.toolbarbutton-1:hover:active > .toolbarbutton-menubutton-button:not(:hover) + .toolbarbutton-menubutton-dropmarker,
+.toolbarbutton-1:not(#bookmarks-menu-button):not([disabled="true"]):hover:active,
+.close-icon:hover:active,
+#TabsToolbar toolbarbutton:hover:active,
+#PersonalToolbar toolbarbutton:hover:active {
+  transition: background-color 0.3s cubic-bezier(0.0, 0.0, 0.2, 1) !important;
+  animation: ripple_effect 0.3s cubic-bezier(0.0, 0.0, 0.2, 1) forwards !important;
+  background-color: var(--toolbarbutton-hover-background) !important;
+  background-size: 0% 0%;
+  color: var(--toolbarbutton-hover-background) !important;
+}
+
+.toolbarbutton-menubutton-button:hover,
+.toolbarbutton-1:hover > .toolbarbutton-menubutton-button:not(:hover) + .toolbarbutton-menubutton-dropmarker,
+toolbar:not(#TabsToolbar) .toolbarbutton-1:not(#bookmarks-menu-button):not([disabled="true"]):hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.toolbarbutton-menubutton-button:hover:active,
+.toolbarbutton-1:hover:hover:active > .toolbarbutton-menubutton-button:not(:hover) + .toolbarbutton-menubutton-dropmarker,
+toolbar:not(#TabsToolbar) .toolbarbutton-1:not(#bookmarks-menu-button):not([disabled="true"]):hover:active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.toolbarbutton-menubutton-button[open="true"],
+.toolbarbutton-1[open="true"] > .toolbarbutton-menubutton-button:not(:hover) + .toolbarbutton-menubutton-dropmarker,
+toolbar:not(#TabsToolbar) .toolbarbutton-1:not(#bookmarks-menu-button):not([disabled="true"])[open="true"] {
+  border-image: radial-gradient(circle closest-corner at center calc(100% - 1px),
+                                white 100%,
+                                transparent 0%)
+                                0 0 2 / 0 0 2px;
+}
+
+
+#PanelUI-button {
+  border-inline-start: 1px solid rgba(0, 0, 0, 0.12);
+  border-image: none !important;
+  margin-inline-start: 6px;
+  padding-inline-start: 6px;
+}
+
+window:not([chromehidden~="toolbar"]) #urlbar-wrapper > #forward-button[disabled] {
+  margin-left: 0 !important;
+}
+
+#identity-box {
+  background-color: transparent !important;
+  padding: 0 8px !important;
+  border-radius: 2px 0 0 2px;
+}
+
+#identity-box * {
+  color: #4CAF50 !important;
+}
+
+/* Restyle icons; look in /usr/share/icons/Adwaita for names */
+
+/*
+#back-button .toolbarbutton-icon {
+  list-style-image: url("moz-icon://stock/go-previous-symbolic?size=menu") !important;
+  -moz-image-region: auto;
+}
+
+#forward-button .toolbarbutton-icon {
+  list-style-image: url("moz-icon://stock/go-next-symbolic?size=menu") !important;
+  -moz-image-region: auto;
+}
+
+#PanelUI-menu-button {
+  list-style-image: url("moz-icon://stock/open-menu-symbolic?size=menu") !important;
+  -moz-image-region: auto;
+}
+
+#downloads-button {
+  list-style-image: url("moz-icon://stock/folder-download-symbolic?size=menu") !important;
+  -moz-image-region: auto;
+}
+*/
+
+/***********
+ * popover *
+ ***********/
+
+.panel-arrow {
+  visibility: hidden;
+}
+
+#BMB_bookmarksPopup menupopup,
+.panel-arrowcontent {
+  background: white;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
+}
+
+#PanelUI-popup {
+  margin: -2px -26px !important;
+}
+
+#BMB_bookmarksPopup {
+  margin: -11px -26px !important;
+}
+
+.panel-arrowcontent {
+  margin: 8px;
+  padding: 4px 0;
+}
+
+autorepeatbutton {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+autorepeatbutton.autorepeatbutton-up {
+  border-style: none none solid;
+}
+
+autorepeatbutton.autorepeatbutton-down {
+  border-style: solid none none;
+}
+
+.cui-widget-panelview .subviewbutton:not(.panel-subview-footer) {
+  margin: 0;
+}
+
+.PanelUI-subView menuseparator,
+.PanelUI-subView toolbarseparator,
+.cui-widget-panelview menuseparator {
+  margin: 4px 0;
+}
+
+#BMB_bookmarksPopup menupopup {
+  margin-top: -4px;
+  padding-top: 0;
+}
+
+panelview .toolbarbutton-1,
+.subviewbutton,
+.widget-overflow-list .toolbarbutton-1,
+.panelUI-grid .toolbarbutton-1 > .toolbarbutton-menubutton-button,
+.share-provider-button,
+.toolbaritem-combined-buttons:-moz-any(:not([cui-areatype="toolbar"]), [overflowedItem=true]) > toolbarbutton {
+  min-height: 28px;
+  padding: 4px 8px;
+  background-color: transparent;
+  border-radius: 0;
+  border-style: none;
+}
+
+panelview .toolbarbutton-1:not(:-moz-any([disabled],[open],:active)):hover,
+toolbarbutton.subviewbutton:not(:-moz-any([disabled],[open],:active)):hover,
+menu.subviewbutton:not(:-moz-any([disabled],:active))[_moz-menuactive],
+menuitem.subviewbutton:not(:-moz-any([disabled],:active))[_moz-menuactive],
+.share-provider-button:not(:-moz-any([disabled],[open],:active)):hover:not([checked="true"]),
+.widget-overflow-list .toolbarbutton-1:not(:-moz-any([disabled],[open],:active)):hover,
+.toolbaritem-combined-buttons:-moz-any(:not([cui-areatype="toolbar"]), [overflowedItem=true]) > toolbarbutton:not(:-moz-any([disabled],[open],:active)):hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+.panel-subviews {
+  background-color: white;
+  padding-inline-start: 0;
+  background-clip: padding-box;
+  border-left: none;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
+}
+
+#PanelUI-footer {
+  background-color: transparent;
+}
+
+#PanelUI-multiView[viewtype="subview"] > .panel-viewcontainer > .panel-viewstack > .panel-mainview >  #PanelUI-mainView {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.panelUI-grid .toolbarbutton-1:not([buttonover]):not(:-moz-any([disabled],[open],:active)):hover > .toolbarbutton-menubutton-dropmarker {
+  background-color: red !important;
+}
+
+.PanelUI-remotetabs-prefs-button {
+  background-color: red !important;
+}
+
+#PanelUI-fxa-status:not([disabled]):hover,
+#PanelUI-fxa-icon:not([disabled]):hover,
+#PanelUI-help:not([disabled]):hover,
+#PanelUI-customize:hover,
+#PanelUI-quit:not([disabled]):hover {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+#PanelUI-fxa-status:not([disabled]):hover:active,
+#PanelUI-fxa-icon:not([disabled]):hover:active,
+#PanelUI-help:not([disabled]):hover:active,
+#PanelUI-customize:hover:active,
+#PanelUI-quit:not([disabled]):hover:active {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.24);
+  box-shadow: none;
+}
+
+#PanelUI-footer-fxa[fxastatus="error"] > #PanelUI-fxa-status:hover {
+  background-color: red !important;
+}
+
+#PanelUI-footer-fxa[fxastatus="error"] > #PanelUI-fxa-status:hover:active {
+  background-color: red !important;
+}
+
+#PanelUI-panic-timeframe {
+  border-color: red;
+}
+
+#PanelUI-update-status {
+  border-color: red !important;
+}
+
+.panel-subview-header {
+  margin: -4px -4px 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: none;
+  color: GrayText;
+  font-variant: small-caps;
+}
+
+.subviewbutton.panel-subview-footer {
+  background-clip: padding-box;
+  margin: 4px -4px -4px;
+  background-color: transparent;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.subviewradio {
+  background-color: red !important;
+}
+
+#PanelUI-footer-inner,
+#PanelUI-footer-fxa:not([hidden]) {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+#PanelUI-footer-inner > toolbarseparator,
+#PanelUI-footer-fxa > toolbarseparator {
+  margin: 6px -1px 6px 0;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+#PanelUI-footer-inner:hover > toolbarseparator,
+#PanelUI-footer-fxa:hover > toolbarseparator {
+  margin: 0 -1px 0 0;
+}
+
+.toolbaritem-combined-buttons:-moz-any(:not([cui-areatype="toolbar"]), [overflowedItem=true]) {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.subviewbutton > .toolbarbutton-text {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+:root {
+  --panel-ui-exit-subview-gutter-width: 48px;
+}
+
+/****************
+ * new tab page *
+ ****************/
+
+.newtab-cell {
+  border-radius: 2px;
+}
+
+.newtab-site {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.newtab-cell:not([ignorehover]) .newtab-control:hover ~ .newtab-link,
+.newtab-cell:not([ignorehover]) .newtab-link:hover,
+.newtab-site[dragged] {
+  border: none;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
+  margin: 0;
+}
+
+.newtab-link {
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.newtab-thumbnail {
+  border-radius: 2px 2px 0px 0px;
+}
+
+.newtab-title {
+  color: white !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  border: none !important;
+  border-radius: 0px 0px 2px 2px;
+}
+
+.newtab-sponsored {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid red;
+  border-radius: 3px;
+  color: #4A4A4A;
+}
+
+#newtab-search-text {
+  -moz-box-flex: 1;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 36px;
+  padding-right: 8px;
+  background-color: white;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: box-shadow 0.2s cubic-bezier(0.0, 0.0, 0.2, 1) !important;
+}
+
+#newtab-search-text:focus {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
+}
+
+#newtab-search-form {
+  height: 40px;
+}
+
+#newtab-search-icon {
+  width: 40px;
+  height: 40px;
+}
+
+#newtab-search-submit {
+  padding: 0;
+  margin: 0;
+  width: 40px;
+  height: 40px;
+  right: 0;
+  position: absolute;
+
+  background-color: transparent !important;
+  background-image: url("chrome://browser/skin/search-arrow-go.svg#search-arrow-go") !important;
+  border: none;
+  box-shadow: none !important;
+}
+
+#newtab-search-text:focus + #newtab-search-submit,
+#newtab-search-text + #newtab-search-submit:hover,
+#newtab-search-text[autofocus] + #newtab-search-submit {
+  border-color: #59b5fc #45a3e7 #3294d5;
+  color: white;
+}
+
+#newtab-search-text:focus + #newtab-search-submit,
+#newtab-search-text[keepfocus] + #newtab-search-submit,
+#newtab-search-text[autofocus] + #newtab-search-submit {
+  background: url("chrome://browser/skin/search-arrow-go.svg#search-arrow-go-inverted") center center no-repeat, linear-gradient(#4cb1ff, #1793e5);
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.2) inset,
+              0 0 0 1px hsla(0,0%,100%,.1) inset,
+              0 1px 0 hsla(210,54%,20%,.03);
+}
+
+#newtab-search-text + #newtab-search-submit:hover {
+  background: url("chrome://browser/skin/search-arrow-go.svg#search-arrow-go-inverted") center center no-repeat, linear-gradient(#4cb1ff, #1793e5);
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.2) inset,
+              0 0 0 1px hsla(0,0%,100%,.1) inset,
+              0 1px 0 hsla(210,54%,20%,.03),
+              0 0 4px hsla(206,100%,20%,.2);
+}
+
+
+#newtab-customize-button {
+  background-image: -moz-image-rect(url(chrome://browser/skin/newtab/controls.svg), 0, 32, 32, 0) !important;
+  background-size: 24px;
+  height: 48px;
+  width: 48px;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none !important;
+  border-radius: 9999px !important;
+}
+
+#newtab-search-submit:hover,
+#newtab-customize-button:-moz-any(:hover, :active, [active]) {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+#newtab-search-submit:hover:active,
+#newtab-customize-button:-moz-any(:active, [active]) {
+  background-color: rgba(0, 0, 0, 0.24) !important;
+}
+
+#newtab-customize-panel-inner-wrapper {
+  border-radius: 2px;
+}
+
+#newtab-customize-panel {
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.16)) drop-shadow(0 3px 3px rgba(0, 0, 0, 0.23));
+}
+
+.newtab-customize-panel-superitem,
+.newtab-customize-panel-item:not(:first-child) {
+  background-clip: padding-box;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.newtab-customize-panel-item,
+.newtab-customize-complex-option {
+  background-color: transparent;
+}
+
+
+.newtab-customize-panel-item:not([selected]),
+.newtab-customize-panel-subitem:not([selected]){
+  color: var(--chrome-color);
+}
+
+.newtab-customize-panel-item:not([selected]):hover {
+  color: var(--chrome-color);
+  background-color: rgba(0, 0, 0, 0.12);
+}
